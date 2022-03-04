@@ -1,27 +1,39 @@
+from Resources import abstract_words
+import linguistic_features
 import language_models as lm
+import llr
 import nltk
 import math
+import pandas as pd
 #nltk.download()
 
 if __name__ == '__main__':
 
-    #lm_uq = lm.UnigramModel('Books/PrideAndPrejudice.txt')
-    #lm_uq.preprocess()
+    # Calculating the feature values of the quotations
 
-    lm_uq = lm.UnigramModel('Quotations/Quotations.txt')
-    lm_uq.preprocess()
-    lm_uq.fit()
+    quotations_file = open('Resources/Quotations/mg_quotes.txt', 'r')
+    quotes = quotations_file.readlines()
+    quotations_file.close()
 
-    lm_uc = lm.UnigramModel('Books/PrideAndPrejudice.txt')
-    lm_uc.preprocess()
-    lm_uc.fit()
+    feature_values_file = open('Resources/Quotations/mg_quotes_fvalues.csv', 'w')
+    feature_values_file.writelines(f'llr, words, chars, wd_len_agg, capitals, quantifiers, sw, '
+                                   f'begins_with_sw, has_diag, abs, has_quotations, has_parenthesis, '
+                                   f'has_colon, has_dash, has_semicolon, nouns, verbs, adj, adv, '
+                                   f'has_comp, has_super, has_pp\n')
+    for quote in quotes:
+        mf = linguistic_features.LinguisticFeatures(quote)
 
-    print(f'Q:{lm_uq.get_probability("end")} C:{lm_uc.get_probability("end")} R:{math.log(lm_uq.get_probability("end") / lm_uc.get_probability("end"))}')
-    print(f'Q:{lm_uq.get_probability("ability")} C:{lm_uc.get_probability("ability")} R:{math.log(lm_uq.get_probability("ability") / lm_uc.get_probability("ability"))}')
-    print(f'Q:{lm_uq.get_probability("dello")} C:{lm_uc.get_probability("dello")} R:{math.log(lm_uq.get_probability("dello") / lm_uc.get_probability("dello"))}')
-    print(f'Q:{lm_uq.get_probability("mello")} C:{lm_uc.get_probability("mello")} R:{math.log(lm_uq.get_probability("mello") / lm_uc.get_probability("mello"))}')
+        feature_values_file.writelines(f'{mf.f_llr}, {mf.n_words}, {mf.n_chars}, {mf.n_word_len_agg}, '
+                                       f'{mf.n_capital}, {mf.n_quantifiers}, {mf.n_stops}, {mf.b_begin_stop}, '
+                                       f'{mf.b_has_diag}, {mf.n_abs}, {mf.b_has_quotes}, {mf.b_has_parenthesis}, '
+                                       f'{mf.b_has_colon}, {mf.b_has_dash}, {mf.b_has_semicolon}, {mf.n_nouns}, '
+                                       f'{mf.n_verbs}, {mf.n_adj}, {mf.n_adv}, {mf.b_has_comp}, {mf.b_has_super}, '
+                                       f'{mf.b_has_pp}\n')
 
+    feature_values_file.close()
+    quotations_file.close()
 
-
+    features_df = pd.read_csv('Resources/Quotations/mg_quotes_fvalues.csv')
+    print(features_df.head(5))
 
 
