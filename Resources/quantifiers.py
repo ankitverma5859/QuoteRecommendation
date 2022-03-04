@@ -1,0 +1,26 @@
+# Source: https://linguapress.com/grammar/quantifiers.htm
+quantifiers = [
+    "all",
+    "any",
+    "each",
+    "enough",
+    "every",
+    "few",
+    "large",
+    "least",
+    "little"
+    "lot",
+    "lots",
+    "majority",
+    "many",
+    "most",
+    "much",
+    "nobody",
+    "none",
+    "numerous",
+    "plenty",
+    "several",
+    "small",
+    "some",
+    "whole",
+]
