@@ -30,3 +30,7 @@ class LLR:
         for word in words_without_sw:
             llr += math.log(self.um_q.get_probability(word) / self.cs_obj.get_probability(word))
         return llr
+
+
+
+

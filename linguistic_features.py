@@ -73,7 +73,9 @@ class LinguisticFeatures:
     @staticmethod
     def word_len_agg(words):
         word_lens = [len(word) for word in words]
-        return sum(word_lens) / len(word_lens)
+        if len(word_lens) > 0:
+            return sum(word_lens) / len(word_lens)
+        return 1.0
 
     @staticmethod
     def num_of_words_with_uppercase(words):
